@@ -13,7 +13,7 @@ class ChartSettings extends React.Component {
     state = {
         startDate: null,
         endDate: null,
-        showOpts: true,
+        showOptins: true,
         showRecepients: true,
     };
 
@@ -35,7 +35,7 @@ class ChartSettings extends React.Component {
     
     onOptionsChange(e) {
         this.setState({
-            showOpts: e
+            showOptins: e
         },() => {
             if(this.state.startDate !== null && this.state.endDate !== null) {
                 ChartActionCreator.fetchChatData(this.state);

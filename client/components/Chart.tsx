@@ -2,6 +2,7 @@ import * as React from 'react';
 import ChartSettings from './ChartSettings';
 import ChartStore from '../store/ChartStore';
 import ChartActionTypes from '../actionTypes/ChartActionTypes';
+import {VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryGroup, VictoryAxis} from 'Victory';
 
 import {
     Card,
@@ -30,6 +31,7 @@ class Chart extends React.Component {
     }
 
     onFetchSuccess() {
+        console.log(ChartStore.chartState.chartData);
         this.setState({
             chartData: ChartStore.chartState.chartData,
         });
@@ -52,6 +54,9 @@ class Chart extends React.Component {
             margin: '0px 0px 30px 0px',
             padding: '0px 0px 0px 0px',
         }
+        let optins = ChartStore.chartState.chartData ? ChartStore.chartState.chartData.optins: null;
+        let recipients = ChartStore.chartState.chartData? ChartStore.chartState.chartData.recipients: null;
+
         return <div> 
             <Card
                 title='Chart Settings' 
@@ -61,7 +66,49 @@ class Chart extends React.Component {
             <Card
                 title='Chart' 
                 style={cardStyle}>
-                Chart
+                <VictoryChart
+                    theme={VictoryTheme.material}
+                    domainPadding={10}
+                    scale={{ x: "date", y: "linear" }}
+                    style={{fontSize:8}}
+                >
+                    <VictoryLegend
+                        centerTitle
+                        orientation="horizontal"
+                        data={[
+                            { name: 'optins', symbol: { fill: "blue" }},
+                            { name: 'recipients', symbol: { fill: "red" }}
+                        ]}
+                    />
+                    <VictoryAxis
+                        style={{ axis: { stroke: '#E0F2F1' },
+                            tickLabels: { fontSize: 5},
+                        }} 
+                        dependentAxis
+                    />
+                    <VictoryAxis
+                        style={{ axis: { stroke: '#E0F2F1' },
+                            tickLabels: { fontSize: 5}
+                        }}
+                    />
+                    <VictoryGroup>
+                        { optins ? <VictoryLine
+                            style={{
+                                data: { stroke: "blue", strokeWidth: 1}
+                            }}
+                            data={optins}
+                            x="date"
+                            y="count"/> : null}
+
+                        { recipients ? <VictoryLine
+                            style={{
+                                data: { stroke: "red", strokeWidth: 1 }
+                            }}
+                            data={recipients}
+                            x="date"
+                            y="count"/>: null}
+                    </VictoryGroup>
+                </VictoryChart>
             </Card>
         </div>
     }

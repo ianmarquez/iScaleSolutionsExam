@@ -16,7 +16,6 @@ class ChartStore extends EventEmitter {
             },
             chartData: null
         }
-        this.chartData = null;
         Dispatcher.register(this.registerToActions.bind(this));
     }
 
@@ -32,7 +31,7 @@ class ChartStore extends EventEmitter {
                 this.emit(action.actionType);
             break;
             case ActionTypes.CHART_FETCH_SUCCESS:
-                this.chartData = action.payload;
+                this.chartState.chartData = action.payload;
                 this.emit(action.actionType);
             break;
         }
